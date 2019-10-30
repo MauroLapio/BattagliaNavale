@@ -1,3 +1,5 @@
+package battleship;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -27,8 +29,7 @@ public class BNServer
 
 class Game
 {
-    // Board cells numbered 0-8, top to bottom, left to right; null if empty
-    private Player[] board = new Player[9];
+    private Player[][] board = new Player[21][21];
 
     Player currentPlayer;
 
@@ -117,17 +118,17 @@ class Game
         {
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
-            output.println("WELCOME " + mark);
-            if (mark == 'X')
+            output.println(mark);
+            if (mark == '1')
             {
                 currentPlayer = this;
-                output.println("MESSAGE Waiting for opponent to connect");
+                output.println("Waiting for opponent to connect");
             }
-            else
+            else if (mark == '2')
             {
                 opponent = currentPlayer;
                 opponent.opponent = this;
-                opponent.output.println("MESSAGE Your move");
+                opponent.output.println("Your move");
             }
         }
 
