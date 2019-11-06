@@ -146,13 +146,18 @@ class Game
                 {
                     return;
                 }
-                else if (command.contentEquals("1"))
+               /* else if (command.contentEquals("1"))
                 {
                     System.out.println("0;0 = " + board[0][0]);
                     System.out.println("Comando: "+command);
                     board[0][0] = 1;
                     System.out.println("0;0 = " + board[0][0]);
                 }
+                else
+                {
+                    System.out.println(command);
+                }*/
+                System.out.println(command);
             }
         }
 
