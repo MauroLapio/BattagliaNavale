@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,7 +16,8 @@ public class BNServer
     {
         try (ServerSocket listener = new ServerSocket(58901))
         {
-            System.out.println("Battleship Server is Running...");
+            System.out.println("BATTLESHIP");
+            
             ExecutorService pool = Executors.newFixedThreadPool(2);
             while (true)
             {
@@ -29,13 +31,13 @@ public class BNServer
 
 class Game
 {
-    private Player[][] board = new Player[21][21];
+    public int[][] board = new int[21][21];
 
     Player currentPlayer;
 
     public boolean hasWinner()
     {
-        return (board[0] != null && board[0] == board[1] && board[0] == board[2])
+        /*return (board[0] != null && board[0] == board[1] && board[0] == board[2])
             || (board[3] != null && board[3] == board[4] && board[3] == board[5])
             || (board[6] != null && board[6] == board[7] && board[6] == board[8])
             || (board[0] != null && board[0] == board[3] && board[0] == board[6])
@@ -43,7 +45,8 @@ class Game
             || (board[2] != null && board[2] == board[5] && board[2] == board[8])
             || (board[0] != null && board[0] == board[4] && board[0] == board[8])
             || (board[2] != null && board[2] == board[4] && board[2] == board[6]
-        );
+        );*/
+        return false;
     }
 
     public boolean boardFilledUp()
@@ -65,7 +68,7 @@ class Game
         {
             throw new IllegalStateException("Cell already occupied");
         }
-        board[location] = currentPlayer;
+        //board[location] = currentPlayer;
         currentPlayer = currentPlayer.opponent;
     }
 
@@ -76,16 +79,18 @@ class Game
      */
     class Player implements Runnable
     {
-        char mark;
+        Boats barche;
+        char id;
         Player opponent;
         Socket socket;
         Scanner input;
         PrintWriter output;
 
-        public Player(Socket socket, char mark)
+        public Player(Socket socket, char id)
         {
             this.socket = socket;
-            this.mark = mark;
+            this.id = id;
+            barche = new Boats();
         }
 
         @Override
@@ -104,7 +109,7 @@ class Game
             {
                 if (opponent != null && opponent.output != null)
                 {
-                    opponent.output.println("OTHER_PLAYER_LEFT");
+                    System.out.println("Other player left");
                 }
                 try
                 {
@@ -118,17 +123,17 @@ class Game
         {
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
-            output.println(mark);
-            if (mark == '1')
+            output.println(id);
+            if (id == '1')
             {
                 currentPlayer = this;
-                output.println("Waiting for opponent to connect");
+                System.out.println("Waiting for opponent to connect");
             }
-            else if (mark == '2')
+            else if (id == '2')
             {
                 opponent = currentPlayer;
                 opponent.opponent = this;
-                opponent.output.println("Your move");
+                System.out.println("Insert the new boat coordinates");
             }
         }
 
@@ -140,9 +145,13 @@ class Game
                 if (command.startsWith("QUIT"))
                 {
                     return;
-                } else if (command.startsWith("MOVE"))
+                }
+                else if (command.contentEquals("1"))
                 {
-                    processMoveCommand(Integer.parseInt(command.substring(5)));
+                    System.out.println("0;0 = " + board[0][0]);
+                    System.out.println("Comando: "+command);
+                    board[0][0] = 1;
+                    System.out.println("0;0 = " + board[0][0]);
                 }
             }
         }
@@ -169,6 +178,27 @@ class Game
             {
                 output.println("MESSAGE " + e.getMessage());
             }
+        }
+    }
+    
+    class Boats
+    {
+        public Vector barche;
+                
+        public Boats()
+        {
+            barche = new Vector();
+            
+            barche.add(2);
+            barche.add(2);
+            barche.add(2);
+            
+            barche.add(3);
+            barche.add(3);
+            
+            barche.add(4);
+            
+            barche.add(5);
         }
     }
 }
