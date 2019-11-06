@@ -139,6 +139,7 @@ class Game
 
         private void processCommands()
         {
+            boolean idflag=false; //controllo del giocatore
             while (input.hasNextLine())
             {
                 String command = input.nextLine();
@@ -146,18 +147,26 @@ class Game
                 {
                     return;
                 }
-               /* else if (command.contentEquals("1"))
-                {
-                    System.out.println("0;0 = " + board[0][0]);
-                    System.out.println("Comando: "+command);
-                    board[0][0] = 1;
-                    System.out.println("0;0 = " + board[0][0]);
-                }
-                else
-                {
-                    System.out.println(command);
-                }*/
+                
                 System.out.println(command);
+                if(command.contentEquals("id1"))
+                {
+                    if(idflag==false)
+                    {
+                        output.println(1);
+                        idflag = true;
+                    }
+                    else
+                    {
+                        output.println(2);
+                    }
+                }
+                
+                for(int i=0;i<barche.size();i++)
+                {
+                    System.out.println(barche.getBarca(i));
+                    output.println(barche.getBarca(i));
+                }
             }
         }
 
@@ -188,11 +197,11 @@ class Game
     
     class Boats
     {
-        public Vector barche;
+        public Vector<Integer> barche;
                 
         public Boats()
         {
-            barche = new Vector();
+            barche = new Vector<>();
             
             barche.add(2);
             barche.add(2);
@@ -204,6 +213,16 @@ class Game
             barche.add(4);
             
             barche.add(5);
+        }
+        
+        public int getBarca(int i)
+        {
+            return barche.elementAt(i);
+        }
+        
+        public int size()
+        {
+            return barche.size();
         }
     }
 }

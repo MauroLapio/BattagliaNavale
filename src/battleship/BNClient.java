@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.util.Scanner;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,6 +39,7 @@ import javax.swing.JPanel;
  */
 public class BNClient
 {
+    public String id;
     private Socket socket;
     private Scanner in;
     private PrintWriter out;
@@ -53,8 +55,20 @@ public class BNClient
     {
         try
         {
-            System.out.println("ciccio");
-            out.println("ciccio");
+            System.out.println("Connessione in corso...");
+            out.println("id1");
+            
+            id = in.nextLine();
+            System.out.println("Benvenuto giocatore "+ id);
+            System.out.println("Navi disponibili:");
+            Vector<String> barche = new Vector<>();
+            
+            barche.add(in.nextLine());
+            
+            for(int i=0;i<barche.size();i++)
+            {
+                System.out.println("barca " + i+1 + ": " + barche.elementAt(i)+'\n');
+            }
         }
         catch (Exception e)
         {
