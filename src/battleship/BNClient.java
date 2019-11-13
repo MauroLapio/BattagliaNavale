@@ -1,42 +1,10 @@
 package battleship;
 
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.BorderLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Scanner;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Vector;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-/**
- * A client for a multi-player tic tac toe game. Loosely based on an example in
- * Deitel and Deitel’s “Java How to Program” book. For this project I created a
- * new application-level protocol called TTTP (for Tic Tac Toe Protocol), which
- * is entirely plain text. The messages of TTTP are:
- *
- * Client -> Server
- *     MOVE <n>
- *     QUIT
- *
- * Server -> Client
- *     WELCOME <char>
- *     VALID_MOVE
- *     OTHER_PLAYER_MOVED <n>
- *     OTHER_PLAYER_LEFT
- *     VICTORY
- *     DEFEAT
- *     TIE
- *     MESSAGE <text>
- */
 public class BNClient
 {
     public String id;
@@ -55,36 +23,26 @@ public class BNClient
     {
         try
         {
-            System.out.println("Connessione in corso...");
-            out.println("id1");
-
-            id = in.nextLine();
-            System.out.println("Benvenuto giocatore "+ id);
-            System.out.println("Navi disponibili:");
-            
-            while(in.hasNextLine())
-            {
-                String ln = in.nextLine();
-                if(ln.equals("END"))
-                {
-                    break;
-                }
-                System.out.println(ln);
-            }
-            
             int i=0;
             System.out.println("Tempo trascorso:");
             while(i<5)
             {
                 i++;
-                Thread.sleep(1000);
+                Thread.sleep(500);
                 System.out.println(i+"s");
             }
-            System.out.println(in.next());
+            out.println("play");
+            
+            while(in.hasNext())
+            {
+                String input=in.nextLine();
+                System.out.println(input);
+            }
+            
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            System.out.println("Errore: "+ e);
         }
         finally
         {
@@ -99,6 +57,23 @@ public class BNClient
             return;
         }
         BNClient client = new BNClient(args[0]);
+        
+        System.out.println("Connessione in corso...");
+        client.out.println("id1");
+
+        client.id = client.in.nextLine();
+        System.out.println("Benvenuto giocatore "+ client.id);
+        System.out.println("Navi disponibili:");
+
+        while(client.in.hasNextLine())
+        {
+            String ln = client.in.nextLine();
+            if(ln.equals("END"))
+            {
+                break;
+            }
+            System.out.println(ln);
+        }
         client.play();
     }
 }
