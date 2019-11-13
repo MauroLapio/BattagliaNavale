@@ -79,7 +79,8 @@ class Game
      */
     class Player implements Runnable
     {
-        Boats barche;
+        Boats b1;
+        Boats b2;
         char id;
         Player opponent;
         Socket socket;
@@ -90,7 +91,6 @@ class Game
         {
             this.socket = socket;
             this.id = id;
-            barche = new Boats();
         }
 
         @Override
@@ -123,6 +123,10 @@ class Game
         {
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
+            
+            b1 = new Boats(1);
+            b2 = new Boats(2);
+            
             output.println(id);
             if (id == '1')
             {
@@ -149,7 +153,7 @@ class Game
                 }
                 
                 System.out.println(command);
-                if(command.contentEquals("id1"))
+                if(command.contentEquals("id1")) //controlla se il giocatore è 1 o 2
                 {
                     if(idflag==false)
                     {
@@ -162,10 +166,21 @@ class Game
                     }
                 }
                 
-                for(int i=0;i<barche.size();i++)
+                if(this == currentPlayer)
                 {
-                    System.out.println(barche.getBarca(i));
-                    output.println(barche.getBarca(i));
+                    for(int i=0;i<b1.size();i++)
+                    {
+                        System.out.println(b1.getBarca(i));
+                        output.println(b1.getBarca(i));
+                    }
+                }
+                else
+                {
+                    for(int i=0;i<b2.size();i++)
+                    {
+                        System.out.println(b2.getBarca(i));
+                        output.println(b2.getBarca(i));
+                    }
                 }
             }
         }
@@ -195,12 +210,15 @@ class Game
         }
     }
     
+    
     class Boats
     {
         public Vector<Integer> barche;
+        int id;
                 
-        public Boats()
+        public Boats(int id)
         {
+            this.id=id;
             barche = new Vector<>();
             
             barche.add(2);
@@ -218,6 +236,11 @@ class Game
         public int getBarca(int i)
         {
             return barche.elementAt(i);
+        }
+        
+        public Vector<Integer> getBarche()
+        {
+            return barche;
         }
         
         public int size()

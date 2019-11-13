@@ -61,14 +61,6 @@ public class BNClient
             id = in.nextLine();
             System.out.println("Benvenuto giocatore "+ id);
             System.out.println("Navi disponibili:");
-            Vector<String> barche = new Vector<>();
-            
-            barche.add(in.nextLine());
-            
-            for(int i=0;i<barche.size();i++)
-            {
-                System.out.println("barca " + i+1 + ": " + barche.elementAt(i)+'\n');
-            }
         }
         catch (Exception e)
         {
@@ -79,26 +71,6 @@ public class BNClient
             socket.close();
         }
     }
-
-    static class Square extends JPanel
-    {
-        JLabel label = new JLabel();
-
-        public Square()
-        {
-            setBackground(Color.white);
-            setLayout(new GridBagLayout());
-            label.setFont(new Font("Arial", Font.BOLD, 40));
-            add(label);
-        }
-
-        public void setText(char text)
-        {
-            label.setForeground(text == 'X' ? Color.BLUE : Color.RED);
-            label.setText(text + "");
-        }
-    }
-
     public static void main(String[] args) throws Exception
     {
         if (args.length != 1)
