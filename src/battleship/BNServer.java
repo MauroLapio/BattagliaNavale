@@ -127,7 +127,6 @@ class Game
             b1 = new Boats(1);
             b2 = new Boats(2);
             
-            output.println(id);
             if (id == '1')
             {
                 currentPlayer = this;
@@ -147,10 +146,6 @@ class Game
             while (input.hasNextLine())
             {
                 String command = input.nextLine();
-                if (command.startsWith("QUIT"))
-                {
-                    return;
-                }
                 
                 System.out.println(command);
                 if(command.contentEquals("id1")) //controlla se il giocatore è 1 o 2
@@ -182,6 +177,10 @@ class Game
                         output.println(b2.getBarca(i));
                     }
                 }
+                
+                output.println("END"); //termina l'output di linee
+                
+                
             }
         }
 

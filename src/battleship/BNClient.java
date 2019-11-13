@@ -57,10 +57,30 @@ public class BNClient
         {
             System.out.println("Connessione in corso...");
             out.println("id1");
-            
+
             id = in.nextLine();
             System.out.println("Benvenuto giocatore "+ id);
             System.out.println("Navi disponibili:");
+            
+            while(in.hasNextLine())
+            {
+                String ln = in.nextLine();
+                if(ln.equals("END"))
+                {
+                    break;
+                }
+                System.out.println(ln);
+            }
+            
+            int i=0;
+            System.out.println("Tempo trascorso:");
+            while(i<5)
+            {
+                i++;
+                Thread.sleep(1000);
+                System.out.println(i+"s");
+            }
+            System.out.println(in.next());
         }
         catch (Exception e)
         {
