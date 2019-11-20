@@ -70,6 +70,7 @@ class Game
         else if (Position == 0) //Posizionamento Nord
         for (int i=0; i < Boat; i++)
         {
+            
             if(Y - Boat <= 0 || Controllo == true)
             {
                 throw new IllegalStateException("Invalid play");
