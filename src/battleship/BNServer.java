@@ -56,6 +56,9 @@ class Game
 
     public synchronized void move(int X, int Y, int Position, int Boat, Player player)
     {
+        boolean Controllo = false;
+        
+        
         if (player != currentPlayer)
         {
             throw new IllegalStateException("Not your turn");
@@ -67,6 +70,10 @@ class Game
         else if (Position == 0) //Posizionamento Nord
         for (int i=0; i < Boat; i++)
         {
+            if(Y - Boat <= 0 || Controllo == true)
+            {
+                throw new IllegalStateException("Invalid play");
+            }
             board[X][Y-i] = 1;
         }
         else if (Position == 1) //Posizionamento Sud
@@ -87,11 +94,6 @@ class Game
         currentPlayer = currentPlayer.opponent;
     }
 
-    /**
-     * A Player is identified by a character mark which is either 'X' or 'O'.
-     * For communication with the client the player has a socket and associated
-     * Scanner and PrintWriter.
-     */
     class Player implements Runnable
     {
         Boats b1;
@@ -154,6 +156,37 @@ class Game
                 System.out.println("Insert the new boat coordinates");
             }
         }
+        
+        private boolean ControlloCollisioni(int X, int Y, int Position, int Boat)
+        {
+            if (Position == 0) //Posizionamento Nord
+            for(int j=0; j < 3;j++)
+            {
+                for (int i=0; i < Boat+2; i++)
+                {
+                    if(board[X-1+j][Y-1-i] == 1)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (Position == 1) //Posizionamento Sud
+            for (int i=0; i < Boat; i++)
+            {
+                board[X][Y+i] = 1;
+            }
+            else if (Position == 2) //Posizionamento Est
+            for (int i=0; i < Boat; i++)
+            {
+                board[X+i][Y] = 1;
+            }
+            else if (Position == 3) //Posizionamento Ovest
+            for (int i=0; i < Boat; i++)
+            {
+                board[X-i][Y] = 1;
+            }
+            return false;
+        }
 
         private void processCommands()
         {
@@ -195,16 +228,16 @@ class Game
                             if (command.startsWith("Y")) {
                                 Y = (Integer.parseInt(command.substring(2)));
                             }
-                            if (command == "NORTH") {
+                            if ("NORTH".equals(command)) {
                                 Position = 0;
                             }
-                            if (command == "SOUTH") {
+                            if ("SOUTH".equals(command)) {
                                 Position = 1;
                             }
-                            if (command == "EAST") {
+                            if ("EAST".equals(command)) {
                                 Position = 2;
                             }
-                            if (command == "WEST") {
+                            if ("WEST".equals(command)) {
                                 Position = 3;
                             }
                             processMoveCommand(X, Y, Position, Boat);
@@ -225,16 +258,16 @@ class Game
                             if (command.startsWith("Y")) {
                                 Y = (Integer.parseInt(command.substring(2)));
                             }
-                            if (command == "NORTH") {
+                            if ("NORTH".equals(command)) {
                                 Position = 0;
                             }
-                            if (command == "SOUTH") {
+                            if ("SOUTH".equals(command)) {
                                 Position = 1;
                             }
-                            if (command == "EAST") {
+                            if ("EAST".equals(command)) {
                                 Position = 2;
                             }
-                            if (command == "WEST") {
+                            if ("WEST".equals(command)) {
                                 Position = 3;
                             }
                             processMoveCommand(X, Y, Position, Boat);
