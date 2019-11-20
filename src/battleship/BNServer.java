@@ -219,25 +219,32 @@ class Game
                             System.out.println(b1.getBarca(i));
                             output.println(b1.getBarca(i));
                             Boat = (b1.getBarca(i));
-                            if (command.startsWith("QUIT")) {
+                            if (command.startsWith("QUIT"))
+                            {
                                 return;
                             }
-                            if (command.startsWith("X")) {
+                            if (command.startsWith("X"))
+                            {
                                X = (Integer.parseInt(command.substring(2)));
                             }
-                            if (command.startsWith("Y")) {
+                            if (command.startsWith("Y"))
+                            {
                                 Y = (Integer.parseInt(command.substring(2)));
                             }
-                            if ("NORTH".equals(command)) {
+                            if ("NORTH".equals(command)) 
+                            {
                                 Position = 0;
                             }
-                            if ("SOUTH".equals(command)) {
+                            if ("SOUTH".equals(command)) 
+                            {
                                 Position = 1;
                             }
-                            if ("EAST".equals(command)) {
+                            if ("EAST".equals(command)) 
+                            {
                                 Position = 2;
                             }
-                            if ("WEST".equals(command)) {
+                            if ("WEST".equals(command)) 
+                            {
                                 Position = 3;
                             }
                             processMoveCommand(X, Y, Position, Boat);
@@ -249,33 +256,39 @@ class Game
                         {
                             System.out.println(b2.getBarca(i));
                             output.println(b2.getBarca(i));
-                            if (command.startsWith("QUIT")) {
+                            if (command.startsWith("QUIT"))
+                            {
                                 return;
                             }
-                            if (command.startsWith("X")) {
+                            if (command.startsWith("X"))
+                            {
                                X = (Integer.parseInt(command.substring(2)));
                             }
-                            if (command.startsWith("Y")) {
+                            if (command.startsWith("Y"))
+                            {
                                 Y = (Integer.parseInt(command.substring(2)));
                             }
-                            if ("NORTH".equals(command)) {
+                            if ("NORTH".equals(command)) 
+                            {
                                 Position = 0;
                             }
-                            if ("SOUTH".equals(command)) {
+                            if ("SOUTH".equals(command)) 
+                            {
                                 Position = 1;
                             }
-                            if ("EAST".equals(command)) {
+                            if ("EAST".equals(command)) 
+                            {
                                 Position = 2;
                             }
-                            if ("WEST".equals(command)) {
+                            if ("WEST".equals(command)) 
+                            {
                                 Position = 3;
                             }
                             processMoveCommand(X, Y, Position, Boat);
                         }
                     }
                     output.println("END"); //termina l'output di linee
-                }
-                
+                }                
                 if(command.contentEquals("play"))
                 {
                     output.println("  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21");
