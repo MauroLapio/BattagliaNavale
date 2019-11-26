@@ -31,7 +31,7 @@ public class BNServer
 
 class Game
 {
-    public int[][] board = new int[21][21];
+    public Board board = new Board();
 
     Player currentPlayer;
 
@@ -49,12 +49,13 @@ class Game
         return false;
     }
 
-    public boolean boardFilledUp()
+    /*
+    public boolean boardFilledUp() //metodo non ancora in uso
     {
         return Arrays.stream(board).allMatch(p -> p != null);
-    }
+    }*/
 
-    public synchronized void move(int X, int Y, int Position, int Boat, Player player)
+    public synchronized void move(int x, int y, int Position, int Boat, Player player)
     {
         if (player != currentPlayer)
         {
@@ -67,31 +68,26 @@ class Game
         else if (Position == 0) //Posizionamento Nord
         for (int i=0; i < Boat; i++)
         {
-            board[X][Y-i] = 1;
+            board.setPos(x, y-i, 1);
         }
         else if (Position == 1) //Posizionamento Sud
         for (int i=0; i < Boat; i++)
         {
-            board[X][Y+i] = 1;
+            board.setPos(x, y+i, 1);
         }
         else if (Position == 2) //Posizionamento Est
         for (int i=0; i < Boat; i++)
         {
-            board[X+i][Y] = 1;
+            board.setPos(x+i, y, 1);
         }
         else if (Position == 3) //Posizionamento Ovest
         for (int i=0; i < Boat; i++)
         {
-            board[X-i][Y] = 1;
+            board.setPos(x-i, y, 1);
         }
         currentPlayer = currentPlayer.opponent;
     }
-
-    /**
-     * A Player is identified by a character mark which is either 'X' or 'O'.
-     * For communication with the client the player has a socket and associated
-     * Scanner and PrintWriter.
-     */
+    
     class Player implements Runnable
     {
         Boats b1;
@@ -155,9 +151,9 @@ class Game
             }
         }
 
+        boolean idflag=false; //controllo del giocatore
         private void processCommands()
         {
-            boolean idflag=false; //controllo del giocatore
             while (input.hasNextLine())
             {
                 String command = input.nextLine();
@@ -245,7 +241,7 @@ class Game
                 
                 if(command.contentEquals("play"))
                 {
-                    output.println("  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21");
+                    output.println(board);
                 }
             }
         }
@@ -300,6 +296,62 @@ class Game
         public int size()
         {
             return barche.size();
+        }
+    }
+    
+    class Board
+    {
+        public int[][] board;
+        
+        public Board ()
+        {
+            this.board = new int[21][21];
+            
+            int i, j; //contatori
+            for (i=0; i<21; i++)
+            {
+                for (j=0;j<21;j++)
+                {
+                    board[i][j] = 0;
+                }
+            }
+        }
+        
+        public String getBoard()
+        {
+            String ret = "";
+            int i,j;
+            
+            for (i=0; i<21; i++)
+            {
+                for (j=0;j<21;j++)
+                {
+                    ret += board[i][j] + ' ';
+                }
+                ret+='\n';
+            }
+            
+            return ret;
+        }
+        
+        public int getPos(int x, int y)
+        {
+            return board[x][y];
+        }
+        
+        public void setPos(int x, int y, int val)
+        {
+            if (x<=21 && x>=0)
+            {
+                if(y<=21 && y>=0)
+                {
+                    board[x][y] = val;
+                }
+            }
+            else
+            {
+                System.out.println("Errore developer! setPos");
+            }
         }
     }
 }
