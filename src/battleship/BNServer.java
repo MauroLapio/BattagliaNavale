@@ -57,6 +57,9 @@ class Game
 
     public synchronized void move(int x, int y, int Position, int Boat, Player player)
     {
+        boolean Controllo = false;
+        
+        
         if (player != currentPlayer)
         {
             throw new IllegalStateException("Not your turn");
@@ -150,6 +153,43 @@ class Game
                 System.out.println("Insert the new boat coordinates");
             }
         }
+        
+        private boolean ControlloCollisioni(int X, int Y, int Position, int Boat)
+        {
+            if (Position == 0) //Posizionamento Nord
+            {
+                for (int i=0; i < Boat; i++)
+                {
+                    board.setPos(X, Y+i, 1);
+                }
+                for(int j=0; j < 3;j++)
+                {
+                    for (int i=0; i < Boat+2; i++)
+                    {
+                        if(board.getPos(X-1+j, Y-1-i) == 1)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            else if (Position == 1) //Posizionamento Sud
+            for (int i=0; i < Boat; i++)
+            {
+                board.setPos(X, Y-i, 1);
+            }
+            else if (Position == 2) //Posizionamento Est
+            for (int i=0; i < Boat; i++)
+            {
+                board.setPos(X+i, Y, 1);
+            }
+            else if (Position == 3) //Posizionamento Ovest
+            for (int i=0; i < Boat; i++)
+            {
+                board.setPos(X-i, Y, 1);
+            }
+            return false;
+        }
 
         boolean idflag=false; //controllo del giocatore
         private void processCommands()
@@ -182,25 +222,32 @@ class Game
                             System.out.println(b1.getBarca(i));
                             output.println(b1.getBarca(i));
                             Boat = (b1.getBarca(i));
-                            if (command.startsWith("QUIT")) {
+                            if (command.startsWith("QUIT"))
+                            {
                                 return;
                             }
-                            if (command.startsWith("X")) {
+                            if (command.startsWith("X"))
+                            {
                                X = (Integer.parseInt(command.substring(2)));
                             }
-                            if (command.startsWith("Y")) {
+                            if (command.startsWith("Y"))
+                            {
                                 Y = (Integer.parseInt(command.substring(2)));
                             }
-                            if (command == "NORTH") {
+                            if ("NORTH".equals(command)) 
+                            {
                                 Position = 0;
                             }
-                            if (command == "SOUTH") {
+                            if ("SOUTH".equals(command)) 
+                            {
                                 Position = 1;
                             }
-                            if (command == "EAST") {
+                            if ("EAST".equals(command)) 
+                            {
                                 Position = 2;
                             }
-                            if (command == "WEST") {
+                            if ("WEST".equals(command)) 
+                            {
                                 Position = 3;
                             }
                             processMoveCommand(X, Y, Position, Boat);
@@ -212,36 +259,43 @@ class Game
                         {
                             System.out.println(b2.getBarca(i));
                             output.println(b2.getBarca(i));
-                            if (command.startsWith("QUIT")) {
+                            if (command.startsWith("QUIT"))
+                            {
                                 return;
                             }
-                            if (command.startsWith("X")) {
+                            if (command.startsWith("X"))
+                            {
                                X = (Integer.parseInt(command.substring(2)));
                             }
-                            if (command.startsWith("Y")) {
+                            if (command.startsWith("Y"))
+                            {
                                 Y = (Integer.parseInt(command.substring(2)));
                             }
-                            if (command == "NORTH") {
+                            if ("NORTH".equals(command)) 
+                            {
                                 Position = 0;
                             }
-                            if (command == "SOUTH") {
+                            if ("SOUTH".equals(command)) 
+                            {
                                 Position = 1;
                             }
-                            if (command == "EAST") {
+                            if ("EAST".equals(command)) 
+                            {
                                 Position = 2;
                             }
-                            if (command == "WEST") {
+                            if ("WEST".equals(command)) 
+                            {
                                 Position = 3;
                             }
                             processMoveCommand(X, Y, Position, Boat);
                         }
                     }
                     output.println("END"); //termina l'output di linee
-                }
-                
+                }                
                 if(command.contentEquals("play"))
                 {
-                    output.println(board);
+                    output.println("  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21");
+                    output.println("Scegli la nave da inserire: ");
                 }
             }
         }

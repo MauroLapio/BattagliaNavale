@@ -23,14 +23,6 @@ public class BNClient
     {
         try
         {
-            int i=0;
-            System.out.println("Tempo trascorso:");
-            while(i<5)
-            {
-                i++;
-                Thread.sleep(500);
-                System.out.println(i+"s");
-            }
             out.println("play");
             
             while(in.hasNext())
@@ -38,7 +30,6 @@ public class BNClient
                 String input=in.nextLine();
                 System.out.println(input);
             }
-            
         }
         catch (Exception e)
         {
