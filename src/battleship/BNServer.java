@@ -167,6 +167,16 @@ class Game
                 {
                     board.setPos(X, Y-i, 1);
                 }
+                for(int j=0; j < 3;j++)
+                {
+                    for (int i=0; i < Boat+2; i++)
+                    {
+                        if(board.getPos(X-1+j, Y+1+i) == 1)
+                        {
+                            return true;
+                        }
+                    }
+                }
             }
             else if (Position == 2) //Posizionamento Est
             {
@@ -174,12 +184,32 @@ class Game
                 {
                     board.setPos(X+i, Y, 1);
                 }
+                for(int j=0; j < 3;j++)
+                {
+                    for (int i=0; i < Boat+2; i++)
+                    {
+                        if(board.getPos(X-1+i, Y-1+j) == 1)
+                        {
+                            return true;
+                        }
+                    }
+                }
             }
             else if (Position == 3) //Posizionamento Ovest
             {
                 for (int i=0; i < Boat; i++)
                 {
                     board.setPos(X-i, Y, 1);
+                }
+                for(int j=0; j < 3;j++)
+                {
+                    for (int i=0; i < Boat+2; i++)
+                    {
+                        if(board.getPos(X-1+i, Y+1-j) == 1)
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
             return false;
