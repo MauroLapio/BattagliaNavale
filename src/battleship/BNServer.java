@@ -10,25 +10,6 @@ import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BNServer
-{
-    public static void main(String[] args) throws Exception
-    {
-        try (ServerSocket listener = new ServerSocket(58901))
-        {
-            System.out.println("BATTLESHIP");
-            
-            ExecutorService pool = Executors.newFixedThreadPool(2);
-            while (true)
-            {
-                Game game = new Game();
-                pool.execute(game.new Player(listener.accept(), '1'));
-                pool.execute(game.new Player(listener.accept(), '2'));
-            }
-        }
-    }
-}
-
 class Game
 {
     public Board board = new Board();
@@ -59,7 +40,6 @@ class Game
     {
         boolean Controllo = false;
         
-        
         if (player != currentPlayer)
         {
             throw new IllegalStateException("Not your turn");
@@ -69,24 +49,32 @@ class Game
             throw new IllegalStateException("You don't have an opponent yet");
         }
         else if (Position == 0) //Posizionamento Nord
-        for (int i=0; i < Boat; i++)
         {
-            board.setPos(x, y-i, 1);
+            for (int i=0; i < Boat; i++)
+            {
+                board.setPos(x, y-i, 1);
+            }
         }
         else if (Position == 1) //Posizionamento Sud
-        for (int i=0; i < Boat; i++)
         {
-            board.setPos(x, y+i, 1);
+            for (int i=0; i < Boat; i++)
+            {
+                board.setPos(x, y+i, 1);
+            }
         }
         else if (Position == 2) //Posizionamento Est
-        for (int i=0; i < Boat; i++)
         {
-            board.setPos(x+i, y, 1);
+            for (int i=0; i < Boat; i++)
+            {
+                board.setPos(x+i, y, 1);
+            }
         }
         else if (Position == 3) //Posizionamento Ovest
-        for (int i=0; i < Boat; i++)
         {
-            board.setPos(x-i, y, 1);
+            for (int i=0; i < Boat; i++)
+            {
+                board.setPos(x-i, y, 1);
+            }
         }
         currentPlayer = currentPlayer.opponent;
     }
@@ -174,19 +162,25 @@ class Game
                 }
             }
             else if (Position == 1) //Posizionamento Sud
-            for (int i=0; i < Boat; i++)
             {
-                board.setPos(X, Y-i, 1);
+                for (int i=0; i < Boat; i++)
+                {
+                    board.setPos(X, Y-i, 1);
+                }
             }
             else if (Position == 2) //Posizionamento Est
-            for (int i=0; i < Boat; i++)
             {
-                board.setPos(X+i, Y, 1);
+                for (int i=0; i < Boat; i++)
+                {
+                    board.setPos(X+i, Y, 1);
+                }
             }
             else if (Position == 3) //Posizionamento Ovest
-            for (int i=0; i < Boat; i++)
             {
-                board.setPos(X-i, Y, 1);
+                for (int i=0; i < Boat; i++)
+                {
+                    board.setPos(X-i, Y, 1);
+                }
             }
             return false;
         }
@@ -294,7 +288,7 @@ class Game
                 }                
                 if(command.contentEquals("play"))
                 {
-                    output.println("  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21");
+                    output.println(board.getBoard());
                     output.println("Scegli la nave da inserire: ");
                 }
             }
@@ -371,7 +365,7 @@ class Game
             }
         }
         
-        public String getBoard()
+        public String getBoard() //ritorna tutte le caselle della tabella
         {
             String ret = "";
             int i,j;
@@ -380,7 +374,7 @@ class Game
             {
                 for (j=0;j<21;j++)
                 {
-                    ret += board[i][j] + ' ';
+                    ret += String.valueOf(board[i][j]) + ' '; //aggiunta del valore all'interno della casella alla stringa da ritornare
                 }
                 ret+='\n';
             }
@@ -407,5 +401,25 @@ class Game
                 System.out.println("Errore developer! setPos");
             }
         }
+    }
+}
+
+public class BNServer
+{
+    public static void main(String[] args) throws Exception
+    {
+        try (ServerSocket listener = new ServerSocket(58901))
+        {
+            System.out.println("BATTLESHIP");
+            
+            ExecutorService pool = Executors.newFixedThreadPool(2);
+            while (true)
+            {
+                Game game = new Game();
+                pool.execute(game.new Player(listener.accept(), '1'));
+                pool.execute(game.new Player(listener.accept(), '2'));
+            }
+        }
+        
     }
 }
