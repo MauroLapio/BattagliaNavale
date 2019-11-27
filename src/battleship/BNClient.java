@@ -21,21 +21,22 @@ public class BNClient
     
     public void play() throws Exception
     {
+        String input = ""; 
         try
         {
             Scanner keys = new Scanner(System.in); //input da tastiera dell'utente
             out.println("play"); //indica al server che il giocatore è entrato
             
-            while(in.hasNext()) //output della tabella
+            while(!input.equals("END")) //output della tabella
             {
-                String input=in.nextLine(); //input DAL server
-                System.out.println(input); //output AL client
+                input=in.nextLine(); //input DAL server
+                if(!input.equals("END"))
+                {
+                    System.out.println(input); //output AL client
+                }
             }
             
-            while(keys.hasNextLine())
-            {
-                out.print(keys.nextLine());
-            }
+            out.println(keys.nextLine());
         }
         catch (Exception e)
         {

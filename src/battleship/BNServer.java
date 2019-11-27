@@ -320,6 +320,11 @@ class Game
                 {
                     output.println(board.getBoard());
                     output.println("Scegli la nave da inserire: ");
+                    output.println("END");
+                    
+                    String client = "";
+                    client=input.nextLine();
+                    System.out.println(client);
                 }
             }
         }
