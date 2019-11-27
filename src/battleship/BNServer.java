@@ -258,23 +258,7 @@ class Game
                             {
                                 Y = (Integer.parseInt(command.substring(2)));
                             }
-                            if ("NORTH".equals(command)) 
-                            {
-                                Position = 0;
-                            }
-                            if ("SOUTH".equals(command)) 
-                            {
-                                Position = 1;
-                            }
-                            if ("EAST".equals(command)) 
-                            {
-                                Position = 2;
-                            }
-                            if ("WEST".equals(command)) 
-                            {
-                                Position = 3;
-                            }
-                            processMoveCommand(X, Y, Position, Boat);
+                            processMoveCommand(X, Y, command, Boat);
                         }
                     }
                     else
@@ -295,23 +279,7 @@ class Game
                             {
                                 Y = (Integer.parseInt(command.substring(2)));
                             }
-                            if ("NORTH".equals(command)) 
-                            {
-                                Position = 0;
-                            }
-                            if ("SOUTH".equals(command)) 
-                            {
-                                Position = 1;
-                            }
-                            if ("EAST".equals(command)) 
-                            {
-                                Position = 2;
-                            }
-                            if ("WEST".equals(command)) 
-                            {
-                                Position = 3;
-                            }
-                            processMoveCommand(X, Y, Position, Boat);
+                            processMoveCommand(X, Y, command, Boat);
                         }
                     }
                     output.println("END"); //termina l'output di linee
@@ -322,17 +290,39 @@ class Game
                     output.println("Scegli la nave da inserire: ");
                     output.println("END");
                     
-                    String client = "";
+                    String client;
                     client=input.nextLine();
                     System.out.println(client);
                 }
             }
         }
 
-        private void processMoveCommand(int X, int Y, int Position, int Boat)
+        private void processMoveCommand(int X, int Y, String pos, int Boat)
         {
             try
             {
+                int Position = 0;
+                switch (pos)
+                {
+                    //NORTH
+                    case "N":
+                        Position = 0;
+                        break;
+                    //SOUTH
+                    case "S":
+                        Position = 1;
+                        break;
+                    //EAST
+                    case "E":
+                        Position = 2;
+                        break;
+                    //WEST
+                    case "W":
+                        Position = 3;
+                        break;
+                    default:
+                        throw new IllegalStateException("posizione non valida");
+                }
                 move(X, Y, Position, Boat, this);
                 output.println("VALID_MOVE");//Rimossa la risposta su dove ha mosso il giocatore
             }

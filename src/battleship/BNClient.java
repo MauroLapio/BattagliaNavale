@@ -30,7 +30,7 @@ public class BNClient
             while(!input.equals("END")) //output della tabella
             {
                 input=in.nextLine(); //input DAL server
-                if(!input.equals("END"))
+                if(!input.equals("END")) //controllo per non eseguire output di "END"
                 {
                     System.out.println(input); //output AL client
                 }
