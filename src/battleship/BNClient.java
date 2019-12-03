@@ -21,7 +21,7 @@ public class BNClient
     
     public void play() throws Exception
     {
-        String server = ""; //stringa contenente input dal server
+        String server; //stringa contenente input dal server
         try
         {
             Scanner keys = new Scanner(System.in); //input da tastiera dell'utente
@@ -29,6 +29,7 @@ public class BNClient
             
             while(true)
             {
+                server = "";
                 while(!server.equals("END")) //output della tabella
                 {
                     server=in.nextLine(); //input DAL server
@@ -38,7 +39,7 @@ public class BNClient
                     }
                     else
                     {
-                        out.println(keys.nextLine());
+                        out.println(keys.nextLine()); //output AL server
                     }
                 }
             }

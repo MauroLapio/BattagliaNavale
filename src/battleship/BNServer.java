@@ -291,24 +291,21 @@ class Game
                         String client; //stringa contenente input dal client
 
                         output.println(board.getBoard());
-                        output.println("Scegli la dimensione della nave da inserire (2, 3, 4 o 5): ");
+                        output.println("Inserisci la posizione X della barca di dimensione 2 (massimo 21): ");
                         output.println("END");
 
                         client=input.nextLine();
-                        while((Integer.valueOf(client) < 2 || Integer.valueOf(client) > 5)) //controllo sull'input della barca
+                        System.out.println("test input: "+Integer.valueOf(client));
+                        while(Integer.valueOf(client) < 2 || Integer.valueOf(client) > 5) //controllo sull'input della barca
                         {
-                            if(Integer.valueOf(client) < 2 || Integer.valueOf(client) > 5)
-                            {
-                                output.println("Dimensione barca non valida");
-                            }
-                            else
-                            {
-                                int b = Integer.valueOf(client);
-                                output.println("Inserisci la posizione X della barca (massimo 21): ");
-                                output.println("END");
-                                client = input.nextLine();
-                            }
+                            output.println("Dimensione barca non valida");
                         }
+                        
+                        int b = Integer.valueOf(client);
+                        output.println("test: ");
+                        output.println("END");
+                        client = input.nextLine();
+                        System.out.println("bruh client: "+client);
                     }
                     catch(Exception e)
                     {
