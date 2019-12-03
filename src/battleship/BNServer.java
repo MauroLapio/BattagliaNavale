@@ -36,10 +36,11 @@ class Game
         return Arrays.stream(board).allMatch(p -> p != null);
     }*/
 
-    public synchronized void move(int x, int y, int Position, int Boat, Player player)
+    public synchronized void move(int x, int y, int Position, int Boat)
     {
         boolean Controllo = false;
         
+        /*
         if (player != currentPlayer)
         {
             throw new IllegalStateException("Not your turn");
@@ -48,35 +49,44 @@ class Game
         {
             throw new IllegalStateException("You don't have an opponent yet");
         }
-        else if (Position == 0) //Posizionamento Nord
+        else*/ /*
+        if (player != currentPlayer)
         {
-            for (int i=0; i < Boat; i++)
-            {
-                board.setPos(x, y-i, 1);
-            }
+        throw new IllegalStateException("Not your turn");
         }
-        else if (Position == 1) //Posizionamento Sud
+        else if (player.opponent == null)
         {
-            for (int i=0; i < Boat; i++)
-            {
-                board.setPos(x, y+i, 1);
-            }
+        throw new IllegalStateException("You don't have an opponent yet");
         }
-        else if (Position == 2) //Posizionamento Est
-        {
-            for (int i=0; i < Boat; i++)
-            {
-                board.setPos(x+i, y, 1);
-            }
+        else*/ switch (Position) {
+        //Posizionamento Nord
+            case 0:
+                for (int i=0; i < Boat; i++)
+                {
+                    board.setPos(x, y-i, 1);
+                }   break;
+        
+        //Posizionamento Est
+            case 1:
+                for (int i=0; i < Boat; i++)
+                {
+                    board.setPos(x+i, y, 1);
+                }   break;
+        //Posizionamento Sud
+            case 2:
+                for (int i=0; i < Boat; i++)
+                {
+                    board.setPos(x, y+i, 1);
+                }   break;
+        //Posizionamento Ovest
+            case 3:
+                for (int i=0; i < Boat; i++)
+                {
+                    board.setPos(x-i, y, 1);
+                }   break;
+            default:
+                break;
         }
-        else if (Position == 3) //Posizionamento Ovest
-        {
-            for (int i=0; i < Boat; i++)
-            {
-                board.setPos(x-i, y, 1);
-            }
-        }
-        currentPlayer = currentPlayer.opponent;
     }
     
     class Player implements Runnable
@@ -221,8 +231,8 @@ class Game
             while (input.hasNextLine())
             {
                 String command = input.nextLine();
-                int X = 0;
-                int Y = 0;
+                int x = 0;
+                int y = 0;
                 int Position = 0;
                 int Boat = 0;
                 
@@ -252,13 +262,13 @@ class Game
                             }
                             if (command.startsWith("X"))
                             {
-                               X = (Integer.parseInt(command.substring(2)));
+                               x = (Integer.parseInt(command.substring(2)));
                             }
                             if (command.startsWith("Y"))
                             {
-                                Y = (Integer.parseInt(command.substring(2)));
+                                y = (Integer.parseInt(command.substring(2)));
                             }
-                            processMoveCommand(X, Y, command, Boat);
+                            processMoveCommand(x, y, command, Boat);
                         }
                     }
                     else
@@ -273,58 +283,57 @@ class Game
                             }
                             if (command.startsWith("X"))
                             {
-                               X = (Integer.parseInt(command.substring(2)));
+                               x = (Integer.parseInt(command.substring(2)));
                             }
                             if (command.startsWith("Y"))
                             {
-                                Y = (Integer.parseInt(command.substring(2)));
+                                y = (Integer.parseInt(command.substring(2)));
                             }
-                            processMoveCommand(X, Y, command, Boat);
+                            processMoveCommand(x, y, command, Boat);
                         }
                     }
                     output.println("END"); //termina l'output di linee
                 }                
                 if(command.contentEquals("play"))
                 {
-                    try
-                    {
-                        String client; //stringa contenente input dal client
+                    String client; //stringa contenente input dal client
 
-                        output.println(board.getBoard());
-                        output.println("Inserisci la posizione X della barca di dimensione 2 (massimo 21): ");
+                    output.println(board.getBoard()); //output della tabella
+                    while(!b1.barche.isEmpty())
+                    {
+                        int b = b1.barche.firstElement(); //barca da inserire nella tabella
+                        output.println("Inserisci la posizione X della barca di dimensione " + b + " (massimo 21): ");
                         output.println("END");
 
                         client=input.nextLine();
-                        System.out.println("test input: "+Integer.valueOf(client));
-                        while(Integer.valueOf(client) < 1 || Integer.valueOf(client) > 21) //controllo sull'input della posizione x
+                        while(Integer.valueOf(client) < 0 || Integer.valueOf(client) > 21) //controllo sull'input della posizione x
                         {
-                            output.println("Dimensione barca non valida");
+                            output.println("posizione barca non valida");
                             output.println("END");
                             client=input.nextLine();
                         }
-                        X = Integer.valueOf(client);
-                        output.println("Bravo hai messo" + X);
-                        
-                        output.println("Inserisci la posizione Y della barca di dimensione 2 (massimo 21): ");
+                        x = Integer.valueOf(client); //posizione x da input
+                        output.println("Bravo hai messo " + x);
+
+                        output.println("Inserisci la posizione Y della barca di dimensione " + b + " (massimo 21): ");
                         output.println("END");
                         client=input.nextLine();
-                        System.out.println("test input: "+Integer.valueOf(client));
-                        while(Integer.valueOf(client) < 1 || Integer.valueOf(client) > 21) //controllo sull'input della posizione Y
+                        System.out.println("test input: "+Integer.valueOf(client)); //test dei comandi inviati al server
+                        while(Integer.valueOf(client) < 0 || Integer.valueOf(client) > 21) //controllo sull'input della posizione Y
                         {
-                            output.println("Dimensione barca non valida");
+                            output.println("Posizione barca non valida");
                             output.println("END");
                             client=input.nextLine();
                         }
-                        Y = Integer.valueOf(client);
-                        output.println("Bravo hai messo" + Y);
-                        
-                        client = input.nextLine();
-                        System.out.println("bruh client: "+client);
+                        y = Integer.valueOf(client); //posizione y da input
+                        output.println("Bravo hai messo " + y);
+
+                        //board.setPos(x, y, b);
+                        move(x, y, 1, b); //inserisce la barca in posizione EST con gli appositi controlli
+                        b1.barche.remove(0); //rimuove la barca dalla lista barche dell'utente
                     }
-                    catch(Exception e)
-                    {
-                        System.out.println("Errore durante il metodo play(): "+ e);
-                    }
+
+                    output.println(board.getBoard()); //stampa l'intera tabella
                 }
             }
         }
@@ -355,7 +364,7 @@ class Game
                     default:
                         throw new IllegalStateException("posizione non valida");
                 }
-                move(X, Y, Position, Boat, this);
+                move(X, Y, Position, Boat);
                 output.println("VALID_MOVE");//Rimossa la risposta su dove ha mosso il giocatore
             }
             catch (IllegalStateException e)

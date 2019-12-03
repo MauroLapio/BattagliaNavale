@@ -18,16 +18,16 @@ public class Board
         }
     }
 
-    public String getBoard() //ritorna tutte le caselle della tabella
+    public synchronized String getBoard() //ritorna tutte le caselle della tabella
     {
         String ret = "";
         int i,j;
 
-        for (i=0; i<21; i++)
+        for (i=21-1; i>=0; i--)
         {
             for (j=0;j<21;j++)
             {
-                ret += String.valueOf(board[i][j]) + ' '; //aggiunta del valore all'interno della casella alla stringa da ritornare
+                ret += String.valueOf(board[j][i]) + ' '; //aggiunta del valore all'interno della casella alla stringa da ritornare
             }
             ret+='\n';
         }
@@ -35,12 +35,12 @@ public class Board
         return ret;
     }
 
-    public int getPos(int x, int y)
+    public synchronized int getPos(int x, int y)
     {
         return board[x][y];
     }
 
-    public void setPos(int x, int y, int val)
+    public synchronized void setPos(int x, int y, int val)
     {
         if (x<=21 && x>=0)
         {
