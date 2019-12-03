@@ -42,9 +42,9 @@ public class Board
 
     public synchronized void setPos(int x, int y, int val)
     {
-        if (x<=21 && x>=0)
+        if (x<=20 && x>=0)
         {
-            if(y<=21 && y>=0)
+            if(y<=20 && y>=0)
             {
                 board[x][y] = val;
             }

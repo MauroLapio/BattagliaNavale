@@ -36,7 +36,7 @@ class Game
         return Arrays.stream(board).allMatch(p -> p != null);
     }*/
 
-    public synchronized void move(int x, int y, int Position, int Boat)
+    public synchronized void move(int x, int y, String Position, int Boat)
     {
         boolean Controllo = false;
         
@@ -60,26 +60,26 @@ class Game
         }
         else*/ switch (Position) {
         //Posizionamento Nord
-            case 0:
+            case "nord":
                 for (int i=0; i < Boat; i++)
                 {
                     board.setPos(x, y-i, 1);
                 }   break;
         
         //Posizionamento Est
-            case 1:
+            case "est":
                 for (int i=0; i < Boat; i++)
                 {
                     board.setPos(x+i, y, 1);
                 }   break;
         //Posizionamento Sud
-            case 2:
+            case "sud":
                 for (int i=0; i < Boat; i++)
                 {
                     board.setPos(x, y+i, 1);
                 }   break;
         //Posizionamento Ovest
-            case 3:
+            case "ovest":
                 for (int i=0; i < Boat; i++)
                 {
                     board.setPos(x-i, y, 1);
@@ -233,7 +233,7 @@ class Game
                 String command = input.nextLine();
                 int x = 0;
                 int y = 0;
-                int Position = 0;
+                String Position = "";
                 int Boat = 0;
                 
                 System.out.println(command);
@@ -268,7 +268,6 @@ class Game
                             {
                                 y = (Integer.parseInt(command.substring(2)));
                             }
-                            processMoveCommand(x, y, command, Boat);
                         }
                     }
                     else
@@ -289,7 +288,6 @@ class Game
                             {
                                 y = (Integer.parseInt(command.substring(2)));
                             }
-                            processMoveCommand(x, y, command, Boat);
                         }
                     }
                     output.println("END"); //termina l'output di linee
@@ -306,7 +304,7 @@ class Game
                         output.println("END");
 
                         client=input.nextLine();
-                        while(Integer.valueOf(client) < 0 || Integer.valueOf(client) > 21) //controllo sull'input della posizione x
+                        while(Integer.valueOf(client) < 1 || Integer.valueOf(client) > 21) //controllo sull'input della posizione x
                         {
                             output.println("posizione barca non valida");
                             output.println("END");
@@ -319,7 +317,7 @@ class Game
                         output.println("END");
                         client=input.nextLine();
                         System.out.println("test input: "+Integer.valueOf(client)); //test dei comandi inviati al server
-                        while(Integer.valueOf(client) < 0 || Integer.valueOf(client) > 21) //controllo sull'input della posizione Y
+                        while(Integer.valueOf(client) < 1 || Integer.valueOf(client) > 21) //controllo sull'input della posizione Y
                         {
                             output.println("Posizione barca non valida");
                             output.println("END");
@@ -327,49 +325,28 @@ class Game
                         }
                         y = Integer.valueOf(client); //posizione y da input
                         output.println("Bravo hai messo " + y);
+                        
+                        output.println("Inserisci la direzione della barca di dimensione " + b + " (nord,sud,est,ovest): ");
+                        output.println("END");
+                        client=input.nextLine();
+                        System.out.println("test input: "+client); //test dei comandi inviati al server
+                        while(!client.equals("nord") && !client.equals("sud") && !client.equals("ovest") && !client.equals("est")) //controllo sull'input della direzione
+                        {
+                            System.out.println("test input: "+client);
+                            output.println("Direzione barca non valida");
+                            output.println("END");
+                            client=input.nextLine();
+                        }
+                        Position = client; //direzione da input
+                        output.println("Bravo hai messo " + Position);
 
                         //board.setPos(x, y, b);
-                        move(x, y, 1, b); //inserisce la barca in posizione EST con gli appositi controlli
+                        move(x-1, y-1, Position, b); //inserisce la barca in posizione EST con gli appositi controlli
                         b1.barche.remove(0); //rimuove la barca dalla lista barche dell'utente
                     }
 
                     output.println(board.getBoard()); //stampa l'intera tabella
                 }
-            }
-        }
-
-        private void processMoveCommand(int X, int Y, String pos, int Boat)
-        {
-            try
-            {
-                int Position = 0;
-                switch (pos)
-                {
-                    //NORTH
-                    case "N":
-                        Position = 0;
-                        break;
-                    //SOUTH
-                    case "S":
-                        Position = 1;
-                        break;
-                    //EAST
-                    case "E":
-                        Position = 2;
-                        break;
-                    //WEST
-                    case "W":
-                        Position = 3;
-                        break;
-                    default:
-                        throw new IllegalStateException("posizione non valida");
-                }
-                move(X, Y, Position, Boat);
-                output.println("VALID_MOVE");//Rimossa la risposta su dove ha mosso il giocatore
-            }
-            catch (IllegalStateException e)
-            {
-                output.println("MESSAGE " + e.getMessage());
             }
         }
     }
