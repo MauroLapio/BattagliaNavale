@@ -25,13 +25,21 @@ public class Board
 
         for (i=21-1; i>=0; i--)
         {
+            if(i>=9)
+            {
+                ret += i+1 + " "; //aggiunge il numero della linea della tabella con uno spazio
+            }
+            else
+            {
+                ret += i+1 + "  "; //aggiunge il numero della linea della tabella con due spazi
+            }
             for (j=0;j<21;j++)
             {
                 ret += String.valueOf(board[j][i]) + ' '; //aggiunta del valore all'interno della casella alla stringa da ritornare
             }
             ret+='\n';
         }
-
+        ret+="*  A B C D E F G H I L M N O P Q R S T U V Z";
         return ret;
     }
 

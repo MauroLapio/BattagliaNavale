@@ -5,15 +5,17 @@
             <url>src/battleship/BNServer.java</url>
             <bookmark id="2">
                 <name/>
-                <line>296</line>
+                <line>295</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jacopo/BattagliaNavale/src/battleship/BNServer.java</file>
-            <file>file:/C:/Users/Jacopo/BattagliaNavale/src/battleship/BNClient.java</file>
+            <file>file:/D:/Program%20Files/NetBeans-11.2/Projects/BattagliaNavale/src/battleship/Board.java</file>
+            <file>file:/D:/Program%20Files/NetBeans-11.2/Projects/BattagliaNavale/src/battleship/Boats.java</file>
+            <file>file:/D:/Program%20Files/NetBeans-11.2/Projects/BattagliaNavale/src/battleship/BNClient.java</file>
+            <file>file:/D:/Program%20Files/NetBeans-11.2/Projects/BattagliaNavale/src/battleship/BNServer.java</file>
         </group>
     </open-files>
 </project-private>

@@ -63,7 +63,7 @@ class Game
             case "nord":
                 for (int i=0; i < Boat; i++)
                 {
-                    board.setPos(x, y-i, 1);
+                    board.setPos(x, y+i, 1);
                 }   break;
         
         //Posizionamento Est
@@ -76,7 +76,7 @@ class Game
             case "sud":
                 for (int i=0; i < Boat; i++)
                 {
-                    board.setPos(x, y+i, 1);
+                    board.setPos(x, y-i, 1);
                 }   break;
         //Posizionamento Ovest
             case "ovest":
@@ -290,6 +290,7 @@ class Game
                             }
                         }
                     }
+                    output.println('\n');
                     output.println("END"); //termina l'output di linee
                 }                
                 if(command.contentEquals("play"))
@@ -311,7 +312,7 @@ class Game
                             client=input.nextLine();
                         }
                         x = Integer.valueOf(client); //posizione x da input
-                        output.println("Bravo hai messo " + x);
+                        output.println("Hai inserito " + x);
 
                         output.println("Inserisci la posizione Y della barca di dimensione " + b + " (massimo 21): ");
                         output.println("END");
@@ -324,7 +325,7 @@ class Game
                             client=input.nextLine();
                         }
                         y = Integer.valueOf(client); //posizione y da input
-                        output.println("Bravo hai messo " + y);
+                        output.println("Hai inserito " + y);
                         
                         output.println("Inserisci la direzione della barca di dimensione " + b + " (nord,sud,est,ovest): ");
                         output.println("END");
@@ -338,7 +339,7 @@ class Game
                             client=input.nextLine();
                         }
                         Position = client; //direzione da input
-                        output.println("Bravo hai messo " + Position);
+                        output.println("Hai inserito " + Position);
 
                         //board.setPos(x, y, b);
                         move(x-1, y-1, Position, b); //inserisce la barca in posizione EST con gli appositi controlli
