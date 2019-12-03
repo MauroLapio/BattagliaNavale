@@ -296,14 +296,28 @@ class Game
 
                         client=input.nextLine();
                         System.out.println("test input: "+Integer.valueOf(client));
-                        while(Integer.valueOf(client) < 2 || Integer.valueOf(client) > 5) //controllo sull'input della barca
+                        while(Integer.valueOf(client) < 1 || Integer.valueOf(client) > 21) //controllo sull'input della posizione x
                         {
                             output.println("Dimensione barca non valida");
+                            output.println("END");
+                            client=input.nextLine();
                         }
+                        X = Integer.valueOf(client);
+                        output.println("Bravo hai messo" + X);
                         
-                        int b = Integer.valueOf(client);
-                        output.println("test: ");
+                        output.println("Inserisci la posizione Y della barca di dimensione 2 (massimo 21): ");
                         output.println("END");
+                        client=input.nextLine();
+                        System.out.println("test input: "+Integer.valueOf(client));
+                        while(Integer.valueOf(client) < 1 || Integer.valueOf(client) > 21) //controllo sull'input della posizione Y
+                        {
+                            output.println("Dimensione barca non valida");
+                            output.println("END");
+                            client=input.nextLine();
+                        }
+                        Y = Integer.valueOf(client);
+                        output.println("Bravo hai messo" + Y);
+                        
                         client = input.nextLine();
                         System.out.println("bruh client: "+client);
                     }
