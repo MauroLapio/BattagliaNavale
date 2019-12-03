@@ -286,13 +286,34 @@ class Game
                 }                
                 if(command.contentEquals("play"))
                 {
-                    output.println(board.getBoard());
-                    output.println("Scegli la nave da inserire: ");
-                    output.println("END");
-                    
-                    String client;
-                    client=input.nextLine();
-                    System.out.println(client);
+                    try
+                    {
+                        String client; //stringa contenente input dal client
+
+                        output.println(board.getBoard());
+                        output.println("Scegli la dimensione della nave da inserire (2, 3, 4 o 5): ");
+                        output.println("END");
+
+                        client=input.nextLine();
+                        while((Integer.valueOf(client) < 2 || Integer.valueOf(client) > 5)) //controllo sull'input della barca
+                        {
+                            if(Integer.valueOf(client) < 2 || Integer.valueOf(client) > 5)
+                            {
+                                output.println("Dimensione barca non valida");
+                            }
+                            else
+                            {
+                                int b = Integer.valueOf(client);
+                                output.println("Inserisci la posizione X della barca (massimo 21): ");
+                                output.println("END");
+                                client = input.nextLine();
+                            }
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        System.out.println("Errore durante il metodo play(): "+ e);
+                    }
                 }
             }
         }
@@ -329,101 +350,6 @@ class Game
             catch (IllegalStateException e)
             {
                 output.println("MESSAGE " + e.getMessage());
-            }
-        }
-    }
-    
-    
-    class Boats
-    {
-        public Vector<Integer> barche;
-        int id;
-                
-        public Boats(int id)
-        {
-            this.id=id;
-            barche = new Vector<>();
-            
-            barche.add(2);
-            barche.add(2);
-            barche.add(2);
-            
-            barche.add(3);
-            barche.add(3);
-            
-            barche.add(4);
-            
-            barche.add(5);
-        }
-        
-        public int getBarca(int i)
-        {
-            return barche.elementAt(i);
-        }
-        
-        public Vector<Integer> getBarche()
-        {
-            return barche;
-        }
-        
-        public int size()
-        {
-            return barche.size();
-        }
-    }
-    
-    class Board
-    {
-        public int[][] board;
-        
-        public Board ()
-        {
-            this.board = new int[21][21];
-            
-            int i, j; //contatori
-            for (i=0; i<21; i++)
-            {
-                for (j=0;j<21;j++)
-                {
-                    board[i][j] = 0;
-                }
-            }
-        }
-        
-        public String getBoard() //ritorna tutte le caselle della tabella
-        {
-            String ret = "";
-            int i,j;
-            
-            for (i=0; i<21; i++)
-            {
-                for (j=0;j<21;j++)
-                {
-                    ret += String.valueOf(board[i][j]) + ' '; //aggiunta del valore all'interno della casella alla stringa da ritornare
-                }
-                ret+='\n';
-            }
-            
-            return ret;
-        }
-        
-        public int getPos(int x, int y)
-        {
-            return board[x][y];
-        }
-        
-        public void setPos(int x, int y, int val)
-        {
-            if (x<=21 && x>=0)
-            {
-                if(y<=21 && y>=0)
-                {
-                    board[x][y] = val;
-                }
-            }
-            else
-            {
-                System.out.println("Errore developer! setPos");
             }
         }
     }
