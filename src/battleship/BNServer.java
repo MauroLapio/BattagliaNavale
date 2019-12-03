@@ -317,7 +317,7 @@ class Game
                         output.println("Inserisci la posizione Y della barca di dimensione " + b + " (massimo 21): ");
                         output.println("END");
                         client=input.nextLine();
-                        System.out.println("test input: "+Integer.valueOf(client)); //test dei comandi inviati al server
+                        System.out.println("test input: "+client); //test dei comandi inviati al server
                         while(Integer.valueOf(client) < 1 || Integer.valueOf(client) > 21) //controllo sull'input della posizione Y
                         {
                             output.println("Posizione barca non valida");
