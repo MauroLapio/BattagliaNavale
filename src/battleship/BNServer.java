@@ -58,7 +58,8 @@ class Game
         {
         throw new IllegalStateException("You don't have an opponent yet");
         }
-        else*/ switch (Position) {
+        else*/ switch (Position) 
+        {
         //Posizionamento Nord
             case "nord":
                 for (int i=0; i < Boat; i++)
@@ -369,6 +370,5 @@ public class BNServer
                 pool.execute(game.new Player(listener.accept(), '2'));
             }
         }
-        
     }
 }
