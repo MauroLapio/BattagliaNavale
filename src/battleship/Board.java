@@ -50,16 +50,23 @@ public class Board
 
     public synchronized void setPos(int x, int y, int val)
     {
-        if (x<=20 && x>=0)
+        try
         {
-            if(y<=20 && y>=0)
+            if (x<=20 && x>=0)
             {
-                board[x][y] = val;
+                if(y<=20 && y>=0)
+                {
+                    board[x][y] = val;
+                }
+            }
+            else
+            {
+                throw new Exception ("errore setPos");
             }
         }
-        else
+        catch(Exception e)
         {
-            System.out.println("Errore developer! setPos");
+            System.out.println("Errore developer! " + e);
         }
     }
 }

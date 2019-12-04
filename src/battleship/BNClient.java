@@ -63,7 +63,7 @@ public class BNClient
         BNClient client = new BNClient(args[0]);
         
         System.out.println("Connessione in corso...");
-        client.out.println("id1");
+        client.out.println("id");
 
         client.id = client.in.nextLine();
         System.out.println("Benvenuto giocatore "+ client.id);

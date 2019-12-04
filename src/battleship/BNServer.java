@@ -13,29 +13,10 @@ import java.util.concurrent.Executors;
 class Game
 {
     public Board board = new Board();
+    public boolean idflag=false; //controllo del giocatore
 
     Player currentPlayer;
-
-    public boolean hasWinner()
-    {
-        /*return (board[0] != null && board[0] == board[1] && board[0] == board[2])
-            || (board[3] != null && board[3] == board[4] && board[3] == board[5])
-            || (board[6] != null && board[6] == board[7] && board[6] == board[8])
-            || (board[0] != null && board[0] == board[3] && board[0] == board[6])
-            || (board[1] != null && board[1] == board[4] && board[1] == board[7])
-            || (board[2] != null && board[2] == board[5] && board[2] == board[8])
-            || (board[0] != null && board[0] == board[4] && board[0] == board[8])
-            || (board[2] != null && board[2] == board[4] && board[2] == board[6]
-        );*/
-        return false;
-    }
-
-    /*
-    public boolean boardFilledUp() //metodo non ancora in uso
-    {
-        return Arrays.stream(board).allMatch(p -> p != null);
-    }*/
-
+    Player opponent;
     public synchronized void move(int x, int y, String Position, int Boat)
     {
         boolean Controllo = false;
@@ -60,26 +41,26 @@ class Game
         }
         else*/ switch (Position) {
         //Posizionamento Nord
-            case "nord":
+            case "n","N", "nord", "Nord":
                 for (int i=0; i < Boat; i++)
                 {
                     board.setPos(x, y+i, 1);
                 }   break;
         
         //Posizionamento Est
-            case "est":
+            case "e":
                 for (int i=0; i < Boat; i++)
                 {
                     board.setPos(x+i, y, 1);
                 }   break;
         //Posizionamento Sud
-            case "sud":
+            case "s":
                 for (int i=0; i < Boat; i++)
                 {
                     board.setPos(x, y-i, 1);
                 }   break;
         //Posizionamento Ovest
-            case "ovest":
+            case "o":
                 for (int i=0; i < Boat; i++)
                 {
                     board.setPos(x-i, y, 1);
@@ -91,10 +72,8 @@ class Game
     
     class Player implements Runnable
     {
-        Boats b1;
-        Boats b2;
+        Boats b;
         char id;
-        Player opponent;
         Socket socket;
         Scanner input;
         PrintWriter output;
@@ -136,19 +115,15 @@ class Game
             input = new Scanner(socket.getInputStream());
             output = new PrintWriter(socket.getOutputStream(), true);
             
-            b1 = new Boats(1);
-            b2 = new Boats(2);
+            this.b = new Boats(id);
             
             if (id == '1')
             {
                 currentPlayer = this;
-                System.out.println("Waiting for opponent to connect");
             }
             else if (id == '2')
             {
-                opponent = currentPlayer;
-                opponent.opponent = this;
-                System.out.println("Insert the new boat coordinates");
+                opponent = this;
             }
         }
         
@@ -225,7 +200,7 @@ class Game
             return false;
         }
 
-        boolean idflag=false; //controllo del giocatore
+        
         private void processCommands()
         {
             while (input.hasNextLine())
@@ -237,58 +212,25 @@ class Game
                 int Boat = 0;
                 
                 System.out.println(command);
-                if(command.contentEquals("id1")) //controlla se il giocatore è 1 o 2
+                if(command.contentEquals("id")) //controlla se il giocatore è 1 o 2
                 {
-                    if(idflag==false)
+                    System.out.println("flag: "+ idflag);
+                    if(idflag == false)
                     {
-                        output.println(1);
                         idflag = true;
+                        System.out.println("change: "+idflag);
+                        output.println(1);
                     }
                     else
                     {
                         output.println(2);
                     }
                     
-                    if(this == currentPlayer)
+                    for(int i=0;i<b.size();i++)//Creato inserimento del client con rispettive risposte
                     {
-                        for(int i=0;i<b1.size();i++)//Creato inserimento del client con rispettive risposte
-                        {
-                            System.out.println(b1.getBarca(i));
-                            output.println(b1.getBarca(i));
-                            Boat = (b1.getBarca(i));
-                            if (command.startsWith("QUIT"))
-                            {
-                                return;
-                            }
-                            if (command.startsWith("X"))
-                            {
-                               x = (Integer.parseInt(command.substring(2)));
-                            }
-                            if (command.startsWith("Y"))
-                            {
-                                y = (Integer.parseInt(command.substring(2)));
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for(int i=0;i<b2.size();i++)
-                        {
-                            System.out.println(b2.getBarca(i));
-                            output.println(b2.getBarca(i));
-                            if (command.startsWith("QUIT"))
-                            {
-                                return;
-                            }
-                            if (command.startsWith("X"))
-                            {
-                               x = (Integer.parseInt(command.substring(2)));
-                            }
-                            if (command.startsWith("Y"))
-                            {
-                                y = (Integer.parseInt(command.substring(2)));
-                            }
-                        }
+                        System.out.println(b.getBarca(i));
+                        output.println(b.getBarca(i));
+                        Boat = (b.getBarca(i));
                     }
                     output.println('\n');
                     output.println("END"); //termina l'output di linee
@@ -298,23 +240,25 @@ class Game
                     String client; //stringa contenente input dal client
 
                     output.println(board.getBoard()); //output della tabella
-                    while(!b1.barche.isEmpty())
+                    while(!b.barche.isEmpty())
                     {
-                        int b = b1.barche.firstElement(); //barca da inserire nella tabella
-                        output.println("Inserisci la posizione X della barca di dimensione " + b + " (massimo 21): ");
+                        int barca = b.barche.firstElement(); //barca da inserire nella tabella
+                        output.println("Inserisci la posizione X della barca di dimensione " + barca + " (massimo 21): ");
                         output.println("END");
 
                         client=input.nextLine();
+                        System.out.println("test input: "+client);
                         while(Integer.valueOf(client) < 1 || Integer.valueOf(client) > 21) //controllo sull'input della posizione x
                         {
-                            output.println("posizione barca non valida");
+                            output.println("Posizione barca non valida");
                             output.println("END");
                             client=input.nextLine();
+                            System.out.println("test input: "+client);
                         }
                         x = Integer.valueOf(client); //posizione x da input
                         output.println("Hai inserito " + x);
 
-                        output.println("Inserisci la posizione Y della barca di dimensione " + b + " (massimo 21): ");
+                        output.println("Inserisci la posizione Y della barca di dimensione " + barca + " (massimo 21): ");
                         output.println("END");
                         client=input.nextLine();
                         System.out.println("test input: "+client); //test dei comandi inviati al server
@@ -323,27 +267,28 @@ class Game
                             output.println("Posizione barca non valida");
                             output.println("END");
                             client=input.nextLine();
+                            System.out.println("test input: "+client);
                         }
                         y = Integer.valueOf(client); //posizione y da input
                         output.println("Hai inserito " + y);
                         
-                        output.println("Inserisci la direzione della barca di dimensione " + b + " (nord,sud,est,ovest): ");
+                        output.println("Inserisci la direzione della barca di dimensione " + barca + " (nord,sud,est,ovest): ");
                         output.println("END");
                         client=input.nextLine();
                         System.out.println("test input: "+client); //test dei comandi inviati al server
                         while(!client.equals("nord") && !client.equals("sud") && !client.equals("ovest") && !client.equals("est")) //controllo sull'input della direzione
                         {
-                            System.out.println("test input: "+client);
                             output.println("Direzione barca non valida");
                             output.println("END");
                             client=input.nextLine();
+                            System.out.println("test input: "+client);
                         }
                         Position = client; //direzione da input
                         output.println("Hai inserito " + Position);
 
                         //board.setPos(x, y, b);
-                        move(x-1, y-1, Position, b); //inserisce la barca in posizione EST con gli appositi controlli
-                        b1.barche.remove(0); //rimuove la barca dalla lista barche dell'utente
+                        move(x-1, y-1, Position, barca); //inserisce la barca in posizione EST con gli appositi controlli
+                        b.barche.remove(0); //rimuove la barca dalla lista barche dell'utente
                     }
 
                     output.println(board.getBoard()); //stampa l'intera tabella
